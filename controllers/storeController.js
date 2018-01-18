@@ -50,7 +50,8 @@ exports.createStore = async (req, res) => {
     const store = await (new Store(req.body)).save();
     // mongo save data or show error
     req.flash('success', `Successfully Created ${store.name}. Care to leave a review?`);
-    res.redirect('/stores/${store.slug}');
+    res.redirect(`/store/${store.slug}`);
+    res.redirect('/store/${store.slug}');
 };
 
 exports.getStores = async (req, res) => {
@@ -76,7 +77,7 @@ exports.updateStore = async (req, res) => {
         new: true, // return the new store instead of the old one
         runValidators: true
     }).exec();
-    req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/stores/${store.slug}">View store</a>`);
+    req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/store/${store.slug}">View store</a>`);
     res.redirect(`/stores/${store._id}/edit`);
     // Redirect them the store and teel them it worked
 }
