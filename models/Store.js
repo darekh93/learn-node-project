@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
+const Schema = mongoose.Schema;
 const slug = require('slugs');
 
 const storeSchema = new mongoose.Schema({
@@ -47,14 +48,14 @@ storeSchema.pre('save', async function(next) {
         return; // stop this function from running
     }
     this.slug = slug(this.name);
-    console.log(this.slug);
+    // console.log(this.slug);
     // find other stores that have a slug of wes, wes-1, wes-2
     const slugRegEx = new RegExp(`^(${this.slug})((-[0-9]*$)?)$`, 'i');
-    console.log(slugRegEx);
-    // const storesWithSlug = await this.construcor.find({ slug: slugRegEx });
-    // if(storesWithSlug.length) {
-    //     this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
-    // }
+    // console.log(slugRegEx);
+    const storesWithSlug = await this.constructor.find({ slug: slugRegEx });
+    if(storesWithSlug.length) {
+        this.slug = `${this.slug}-${storesWithSlug.length + 1}`;
+    }
 
     next();
 });
@@ -67,4 +68,4 @@ storeSchema.statics.getTagsList = function() {
     ]);
 }
 
-module.export = mongoose.model('Store', storeSchema);
+module.exports = mongoose.model('Store', storeSchema);
