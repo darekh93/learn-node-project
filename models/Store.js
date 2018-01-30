@@ -12,7 +12,7 @@ const storeSchema = new mongoose.Schema({
     slug: String,
     description: {
         type: String,
-        trim:true
+        trim: true
     },
     tags: [String],
     created: {
@@ -39,8 +39,15 @@ const storeSchema = new mongoose.Schema({
         ref: 'User',
         required: 'You must supply an author'
     }
+});
+
+// Define of indexes
+storeSchema.index({
+    name: 'text',
+    description: 'text'
 
 });
+
 
 storeSchema.pre('save', async function(next) {
     if(!this.isModified('name')) {
